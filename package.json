@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon index.js",
-    "start": "fuser -k 3000/tcp || true && node index.js"
+    "dev": "nodemon server.js",
+    "start": "fuser -k 3000/tcp || true && node server.js",
+    "build": "npm install"
   },
   "keywords": [],
   "author": "",
