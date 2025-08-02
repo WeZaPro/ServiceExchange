@@ -1,11 +1,42 @@
 require("dotenv").config();
+
 const express = require("express");
 const fetch = require("node-fetch");
 const cron = require("node-cron");
 const axios = require("axios");
+const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 3001; // ใช้จาก .env ได้เช่นกัน
+// app.use(cors()); // 👈 เปิดให้ cross-origin ได้ทุกที่
+// app.use(
+//   cors({
+//     origin: "http://localhost:5173", // หรือ domain จริงของ frontend
+//   })
+// );
+
+const allowedOrigins = [
+  "https://happyevtravelandtransfer.com",
+  "https://www.happyevtravelandtransfer.com",
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "https://booking.wezaapidev.com",
+];
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    console.log("Origin incoming:", origin);
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.error("CORS blocked:", origin);
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+};
+
+app.use(cors(corsOptions)); // ✅ ใส่ไว้ก่อนทุก app.use
 
 // === ฟังก์ชันหลัก ===
 async function fetchAndForwardExchangeRate() {
