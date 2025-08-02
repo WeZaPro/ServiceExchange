@@ -21,16 +21,16 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:5174",
   "https://booking.wezaapidev.com",
-  "https://serviceexchange.happyevtravelandtransfer.com",
 ];
 
 const corsOptions = {
   origin: function (origin, callback) {
-    console.log("Origin incoming:", origin);
-    if (!origin || allowedOrigins.includes(origin)) {
+    const normalizedOrigin = origin?.replace(/\/$/, ""); // ตัด / ท้ายสุดออก
+    console.log("Origin incoming:", normalizedOrigin);
+    if (!origin || allowedOrigins.includes(normalizedOrigin)) {
       callback(null, true);
     } else {
-      console.error("CORS blocked:", origin);
+      console.error("CORS blocked:", normalizedOrigin);
       callback(new Error("Not allowed by CORS"));
     }
   },
